@@ -36,13 +36,13 @@ class Factory implements FactoryInterface {
 	}
 
 	public static function createDefault() {
-		$graph_factory = new GraphFactory();
-		$operand_class_resolver = new OperandClassResolver();
-		$method_resolver = new MethodResolver();
+		$graph_factory = new GraphFactory();// 图工厂，没啥东西
+		$operand_class_resolver = new OperandClassResolver(); // Op解析
+		$method_resolver = new MethodResolver(); // 方法解析
 		return new self($graph_factory, PdgFactory::createDefault($graph_factory), new CombiningGenerator([
-			new FunctionCallGenerator(),
-			new MethodCallGenerator($operand_class_resolver, $method_resolver),
-			new OverloadingCallGenerator($operand_class_resolver, $method_resolver),
+			new FunctionCallGenerator(), // 函数调用生成器
+			new MethodCallGenerator($operand_class_resolver, $method_resolver), // 方法调用生成器
+			new OverloadingCallGenerator($operand_class_resolver, $method_resolver), // 过载？？ help
 		]));
 	}
 
@@ -50,6 +50,7 @@ class Factory implements FactoryInterface {
 		$sdg = $this->graph_factory->create();
 		$system = new System($sdg);
 
+		// pdg函数查找
 		/** @var FuncNode[]|\SplObjectStorage $pdg_func_lookup */
 		$pdg_func_lookup = new \SplObjectStorage();
 		$cfg_scripts = [];

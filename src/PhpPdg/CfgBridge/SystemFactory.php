@@ -7,6 +7,7 @@ use PhpParser\Parser as AstParser;
 use PhpParser\ParserFactory;
 use PhpPdg\AstBridge\System as AstSystem;
 
+// 系统工厂
 class SystemFactory implements SystemFactoryInterface {
 	/** @var CfgParser */
 	private $parser;

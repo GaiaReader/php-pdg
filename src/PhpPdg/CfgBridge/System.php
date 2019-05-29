@@ -4,6 +4,7 @@ namespace PhpPdg\CfgBridge;
 
 use PHPCfg\Script;
 
+// CFG的system，其实仅仅是存储所有cfg
 class System {
 	/** @var  Script[] */
 	private $scripts = [];

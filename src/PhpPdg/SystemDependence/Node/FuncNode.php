@@ -5,6 +5,7 @@ namespace PhpPdg\SystemDependence\Node;
 use PhpPdg\Graph\Node\NodeInterface;
 use PhpPdg\ProgramDependence\Func;
 
+// Func节点，就存储Func而已
 class FuncNode implements NodeInterface {
 	/** @var Func  */
 	private $func;

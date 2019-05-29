@@ -7,6 +7,7 @@ use PHPCfg\Block;
 use PHPCfg\Op;
 use PhpPdg\ProgramDependence\Node\OpNode;
 
+// 标记返回节点
 class InitializingVisitor extends AbstractVisitor {
 	private $func;
 
