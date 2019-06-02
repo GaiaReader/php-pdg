@@ -11,6 +11,7 @@ use PhpPdg\Graph\GraphInterface;
 use PhpPdg\Graph\Node\NodeInterface;
 use PhpPdg\ProgramDependence\Node\OpNode;
 
+// 数据依赖的生成visitor
 class GeneratingVisitor extends AbstractVisitor {
 	/** @var GraphInterface  */
 	private $target_graph;
@@ -27,9 +28,11 @@ class GeneratingVisitor extends AbstractVisitor {
 		$this->edge_type = $edge_type;
 	}
 
-	public function enterOp(Op $op, Block $block) {
+	// 进入cfg节点的处理，
+    public function enterOp(Op $op, Block $block) {
 		$op_node = new OpNode($op);
 		foreach ($op->getVariableNames() as $variableName) {
+		    // isWriteVariable为真的情况譬如result, var
 			if ($op->isWriteVariable($variableName) === true) {
 				continue;
 			}
@@ -39,6 +42,8 @@ class GeneratingVisitor extends AbstractVisitor {
 				continue;
 			}
 
+            // 感觉是使用该变量的地方找到上面写该变量的地方连数据依赖线
+            // 改进思路：那就是基于它这个存在xx不敏感，将它变为敏感
 			if (is_array($operand) === true) {
 				foreach ($operand as $i => $arrayOperand) {
 					if ($arrayOperand !== null) {

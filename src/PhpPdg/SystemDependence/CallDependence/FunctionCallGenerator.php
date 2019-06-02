@@ -12,10 +12,12 @@ use PhpPdg\SystemDependence\Node\UndefinedFuncNode;
 use PhpPdg\SystemDependence\System;
 use PHPTypes\State;
 
+// 对于函数调用的处理，
 class FunctionCallGenerator implements GeneratorInterface {
 	public function addCallDependencesToSystem(System $system, State $state, \SplObjectStorage $pdg_func_lookup) {
 		$sdg = $system->sdg;
 		// link function calls to their functions
+        // 链接函数调用其函数
 		foreach ($state->funcCalls as $funcCallPair) {
 			list($func_call, $containing_cfg_func) = $funcCallPair;
 			$call_node = new OpNode($func_call);

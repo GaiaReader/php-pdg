@@ -16,12 +16,14 @@ class Generator implements GeneratorInterface {
 
 	public function generate(GraphInterface $cfg, GraphInterface $pdt) {
 		$cdg = $this->graph_factory->create();
+		// 将cfg中的所有节点复用到cdg中
 		foreach ($cfg->getNodes() as $node) {
 			$cdg->addNode($node);
 		}
 		foreach ($cfg->getNodes() as $node_a) {
 			foreach ($cfg->getEdges($node_a) as $edge) {
 				$node_b = $edge->getToNode();
+				// 将所有CFG边评估为A-B，其中B不支配A
 				// Evaluate all CFG edges as A-B where B does not post-dominate A
 				if ($pdt->hasEdges($node_a, $node_b) === false) {
 					$this->addNodeControlDependences($cdg, $pdt, $node_a, $node_b, $edge->getAttributes());

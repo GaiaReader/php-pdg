@@ -15,6 +15,7 @@ class Generator implements GeneratorInterface {
 	}
 
 	public function generate(GraphInterface $graph, NodeInterface $stop_node) {
+	    // 生成一个hash=>node 的数组
 		$nodes_by_hash = [];
 		$all_hashes = array_keys($nodes_by_hash);
 		foreach ($graph->getNodes() as $node) {
@@ -22,16 +23,20 @@ class Generator implements GeneratorInterface {
 			$nodes_by_hash[$hash] = $node;
 			$all_hashes[] = $hash;
 		}
+		// 初始化所有节点的后序支配，
 		// initialize all node postdominators
-		$post_dominators = array_fill_keys($all_hashes, $all_hashes);
+		$post_dominators = array_fill_keys($all_hashes, $all_hashes); // n*n
 		$stop_node_hash = $stop_node->getHash();
 		$post_dominators[$stop_node_hash] = [$stop_node_hash];
 
+		// 迭代地确定后支配者。不纠结这个算法了，结果就是生成了后序支配树
+        // 这可能不是最快的方法，但它很简单，现在应该足够了。
 		// Iteratively determine post-dominators.
 		// This is probably not the fastest way to do this, but it is simple, and should be enough for now.
 		do {
 			$changes = false;
 			foreach ($nodes_by_hash as $hash => $node) {
+			    // 节点的后支配者包括所有出边节点的后支配者和节点本身的交集。
 				// A node's post-dominators consist of the intersection of the post dominators of all outgoing edge nodes, and the node itself.
 				$new_post_dominators = null;
 				foreach ($graph->getEdges($node) as $edge) {
